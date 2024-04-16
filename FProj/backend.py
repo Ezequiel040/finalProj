@@ -20,7 +20,9 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    is_teacher = db.Column(db.Boolean, default=False) 
+    follow = db.Column(db.Integer, primary_key = True)
+    following = db.Column(db.Integer, primary_key = True)
+    numPost = db.Column(db.Integer, primary_key = True)
     # is_admin = db.Column(db.Boolean, default = False) 
 
     def check_password(self, password):
