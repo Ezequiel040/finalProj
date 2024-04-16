@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Management System</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create.css') }}">
-    <script src="{{ url_for('static', filename='loginP.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
 <body>
 
@@ -25,12 +25,6 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password"><br>
         </div>
-
-        <div class="form-group">
-            <label for="is_teacher">Are you a teacher?</label>
-            <input type="checkbox" id="is_teacher" name="is_teacher"><br>
-        </div>
-        
         <button type ="submit" onclick="createAccount()">Create Account</button>
     </div>
 </div>
