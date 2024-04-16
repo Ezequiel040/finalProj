@@ -58,10 +58,10 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
             login_user(user)
-            return redirect(url_for('courses'))
+            return redirect(url_for('account'))
         else:
             return render_template('login.html', message='Invalid username or password')
-    return render_template('loginP.html')
+    return render_template('login.html')
 
 
 @app.route('/logout')
@@ -89,6 +89,10 @@ def register_post():
     db.session.commit()
     return jsonify({'message': 'User added successfully'}), 201
 
+
+@app.route('/account', methods = ['POST'])
+def account_post():
+    print("yeye")
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()
