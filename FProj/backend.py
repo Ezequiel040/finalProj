@@ -110,8 +110,8 @@ def register_post():
     print("Received JSON data:", data)  
     username = data.get('username')
     password = data.get('password')
-    salt = sha256_crypt.using(rounds=1000).gen_salt()
-    hashedPassword = sha256_crypt.using(rounds=1000).hash(password + salt)
+    # salt = sha256_crypt.using(rounds=1000).gen_salt()
+    # hashedPassword = sha256_crypt.using(rounds=1000).hash(password + salt)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
     new_user = User(username=username, password=hashedPassword, salt = salt)
