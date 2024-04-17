@@ -17,12 +17,12 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    follow = db.Column(db.Integer, primary_key = True)
-    following = db.Column(db.Integer, primary_key = True)
-    numPost = db.Column(db.Integer, primary_key = True)
+    follow = db.Column(db.Integer, default = 0)
+    following = db.Column(db.Integer, default = 0)
+    numPost = db.Column(db.Integer, default = 0)
     # is_admin = db.Column(db.Boolean, default = False) 
 
     def check_password(self, password):
@@ -83,18 +83,22 @@ def register_post():
     print("Received JSON data:", data)  
     username = data.get('username')
     password = data.get('password')
-    is_teacher = data.get('is_teacher', False)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
-    new_user = User(username=username, password=password, is_teacher = is_teacher)
+    new_user = User(username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User added successfully'}), 201
 
 
-@app.route('/account', methods = ['POST'])
-def account_post():
-    print("yeye")
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    if request.method == 'POST':
+        # Handle any POST requests for the account page here if needed
+        pass
+    return render_template('account.html')
+
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()
