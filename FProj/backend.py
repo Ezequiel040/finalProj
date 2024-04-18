@@ -22,7 +22,6 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    # salt = db.Column(db.LargeBinary,nullable = False)
     # follow = db.Column(db.Integer, default = 0)
     # following = db.Column(db.Integer, default = 0)
     # numPost = db.Column(db.Integer, default = 0)
