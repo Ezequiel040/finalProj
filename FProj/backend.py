@@ -19,26 +19,45 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# class Post(db.model):
+#     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+#     title = db.Column (db.String, unique = True, nullable = False)
+#     description = db.Column(db.String)
+
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    # follow = db.Column(db.Integer, default = 0)
-    # following = db.Column(db.Integer, default = 0)
-    # numPost = db.Column(db.Integer, default = 0)
-    # is_admin = db.Column(db.Boolean, default = False) 
+    numPost = db.Column(db.Integer, default=0)
+
+    # Dynamic relationship to get followers count
+    followers = db.Column(db.Integer, default=0, nullable=False)
+    # Dynamic relationship to get following count
+    following = db.Column(db.Integer, default=0, nullable=False)
+
+    # Define relationship to UserFollowing table
+    following_relationships = db.relationship("UserFollowing", foreign_keys='UserFollowing.user_id', backref='user')
 
     def check_password(self, password):
-        return self.password == password 
+        return sha256_crypt.verify(password + self.salt, self.password)
 
+    def update_followers_count(self):
+        self.followers = db.session.query(db.func.count(UserFollowing.follower_id)).filter(UserFollowing.user_id == self.id).scalar()
 
+    def update_following_count(self):
+        self.following = db.session.query(db.func.count(UserFollowing.follower_id)).filter(UserFollowing.follower_id == self.id).scalar()
 
+class UserFollowing(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
 
-
+    
 #Admin , we can go to the admin page with /admin
 #We do not need any special html that comes with it
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
+
 
 
 @login_manager.user_loader
@@ -113,6 +132,16 @@ def getUserID(username):
         return user.id
     else:
         return None
+
+def add_follower(user_id, follower_id):
+    new_following = UserFollowing(user_id=user_id, follower_id=follower_id)
+    db.session.add(new_following)
+    db.session.commit()
+    user = User.query.get(user_id)
+    follower = User.query.get(follower_id)
+    user.update_followers_count()
+    follower.update_following_count()
+    db.session.commit()
     
 #Add Student To Course if logged in
 #Main Page for Users
