@@ -1,9 +1,13 @@
+
 from flask import Flask, redirect, url_for, request, render_template, jsonify
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin.contrib.sqla import ModelView
 from passlib.hash import sha256_crypt
 from flask_login import UserMixin, LoginManager, login_user, login_required, current_user, logout_user
+#im scared abt the midterm
+#me too :( I think i will fail 
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super_secret_key'
@@ -19,14 +23,13 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    # salt = db.Column(db.String(100),nullable = False)
-    follow = db.Column(db.Integer, default = 0)
-    following = db.Column(db.Integer, default = 0)
-    numPost = db.Column(db.Integer, default = 0)
+    # follow = db.Column(db.Integer, default = 0)
+    # following = db.Column(db.Integer, default = 0)
+    # numPost = db.Column(db.Integer, default = 0)
     # is_admin = db.Column(db.Boolean, default = False) 
 
     def check_password(self, password):
-        return self.password == password
+        return sha256_crypt.verify(password + self.salt, self.password)
 
 
 
@@ -45,8 +48,25 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/login')
 def login_page():
-    return render_template('login.html')
+    return render_template('loginP.html')
 
+####################
+# WORK HERE
+####################
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     # if current_user.is_authenticated:
+#     #     return redirect(url_for('courses'))
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         user = User.query.filter_by(username=username).first()
+#         if user and user.password == password:
+#             login_user(user)
+#             return redirect(url_for('account'))
+#         else:
+#             return render_template('login.html', message='Invalid username or password')
+#     return render_template('login.html')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # if current_user.is_authenticated:
@@ -83,7 +103,7 @@ def logout():
 # Add User to DB 
 @app.route('/register')
 def register():
-    return render_template('create.html')
+    return render_template('createAcc.html')
 
 @app.route('/register', methods=['POST'])
 def register_post():
@@ -91,11 +111,12 @@ def register_post():
     print("Received JSON data:", data)  
     username = data.get('username')
     password = data.get('password')
-    # salt = sha256_crypt.using(rounds=1000).gen_salt()
-    # hashedPassword = sha256_crypt.using(rounds=1000).hash(password + salt)
+    
+    hashedPassword = sha256_crypt.hash(password)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
-    new_user = User(username=username, password=hashedPassword, salt = salt)
+    new_user = User(username=username, password=hashedPassword)
+    print("New User ID:", new_user.id)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User added successfully'}), 201
@@ -116,15 +137,7 @@ def getUserID(username):
         return user.id
     else:
         return None
-#Main Page for Users
-@app.route('/main')
-def mainPage():
-    return render_template('main.html')
-#Search Bar for Images
-@app.route('/search')
-def searchPage():
-    return render_template('search.html')
-
+    
 #Add Student To Course if logged in
 
 if __name__ == '__main__':
