@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
     # is_admin = db.Column(db.Boolean, default = False) 
 
     def check_password(self, password):
-        return sha256_crypt.verify(password + self.salt, self.password)
+        return self.password == password 
 
 
 
@@ -62,15 +62,20 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-
-        if username in user:
+        print("hello1")
+        if user and user.username == username:
+            print("hello2")
             storedPassword = user.password
-            salt = user.salt
-
-            if sha256_crypt.verify(password + salt, storedPassword):
+            print(storedPassword)
+            print(password)
+            print(user.password)
+            if storedPassword == user.password:
                 login_user(user)
+                print("hello3")
                 return redirect(url_for('account'))
+
             else:
+                print("hello4")
                 return render_template('login.html', message='Invalid username or password')
 
         # if user and user.password == password:
@@ -78,6 +83,7 @@ def login():
         #     return redirect(url_for('account'))
         # else:
         #     return render_template('login.html', message='Invalid username or password')
+        print("helloFinal")
     return render_template('login.html')
 
 
