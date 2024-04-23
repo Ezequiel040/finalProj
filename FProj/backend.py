@@ -56,34 +56,17 @@ def login_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('courses'))
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        print("hello1")
         if user and user.username == username:
-            print("hello2")
             storedPassword = user.password
-            print(storedPassword)
-            print(password)
-            print(user.password)
-            if storedPassword == user.password:
+            if sha256_crypt.verify(password, storedPassword):
                 login_user(user)
-                print("hello3")
                 return redirect(url_for('account'))
-
             else:
-                print("hello4")
                 return render_template('login.html', message='Invalid username or password')
-
-        # if user and user.password == password:
-        #     login_user(user)
-        #     return redirect(url_for('account'))
-        # else:
-        #     return render_template('login.html', message='Invalid username or password')
-        print("helloFinal")
     return render_template('login.html')
 
 
