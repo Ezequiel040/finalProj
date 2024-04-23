@@ -48,25 +48,12 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/login')
 def login_page():
-    return render_template('loginP.html')
+    return render_template('login.html')
 
 ####################
 # WORK HERE
 ####################
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     # if current_user.is_authenticated:
-#     #     return redirect(url_for('courses'))
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         user = User.query.filter_by(username=username).first()
-#         if user and user.password == password:
-#             login_user(user)
-#             return redirect(url_for('account'))
-#         else:
-#             return render_template('login.html', message='Invalid username or password')
-#     return render_template('login.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # if current_user.is_authenticated:
@@ -103,7 +90,7 @@ def logout():
 # Add User to DB 
 @app.route('/register')
 def register():
-    return render_template('createAcc.html')
+    return render_template('create.html')
 
 @app.route('/register', methods=['POST'])
 def register_post():
