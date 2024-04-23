@@ -131,7 +131,15 @@ def getUserID(username):
     else:
         return None
     
-#Add Student To Course if logged in
+#Main Page for Users
+@app.route('/main')
+def mainPage():
+    return render_template('main.html')
+#Search Bar for Images
+@app.route('/search')
+def searchPage():
+    return render_template('search.html')
+
 
 if __name__ == '__main__':
     with app.app_context():
