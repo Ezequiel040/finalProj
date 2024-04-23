@@ -103,3 +103,80 @@ button[type="submit"]:hover {
 button.create-account:hover {
     background-color: #218838;
 }
+/* account.css */
+
+/* Body styles */
+body.account-page {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header styles */
+.account-header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* Navigation styles */
+.account-nav {
+    background-color: #444;
+}
+
+.account-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Add flex display */
+    justify-content: center; /* Align items to the end (right side) */
+}
+
+.account-nav ul li {
+    margin-left: 20px; /* Add some margin between items */
+}
+
+.account-nav ul li:first-child {
+    margin-left: 0; /* Remove margin for the first item */
+}
+
+.account-nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.account-nav ul li a:hover {
+    background-color: #555;
+}
+
+/* Main content styles */
+.account-main {
+    padding: 20px;
+}
+
+.account-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.account-section h2 {
+    color: #333;
+}
+
+/* Footer styles */
+.account-footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
