@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
+</head>
+
+<body>
+
+<!-- Nav bar on very left -->
+<div class="navbar">
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+</div>
+
+<!-- instagram multiple images scene -->
+<!-- will have to have multiple rows, maybe a table? -->
+<div class="imageViewer">
+    <!-- Search Bar on the top -->
+    <div id="searchBar">
+        <form>
+            <label for="search">Search:</label>
+            <input type="text" name="search" size="20">
+        </form>
+    </div>
+    <div class="imageRows">
+        
+    </div>
+</div>
+
+</body>
+
+</html>

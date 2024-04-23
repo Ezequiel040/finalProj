@@ -1,0 +1,98 @@
+body {
+    margin: 0%;
+    padding: 0%;
+    border: 0%;
+    background-color: rgb(17, 53, 95); 
+    background-size: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height:100%;
+}
+
+.mainPage{
+    margin: 0%;
+    padding: 0%;
+    border: 0%;
+    height: 100%;
+    width: 100%;
+}
+
+.navbar{
+    position: absolute;
+    background: rgb(56, 162, 189);
+    flex-direction: column;
+    height: 100%;
+    width: 60px;
+    top: 0px;
+    left: 0px;
+}
+
+.navbar div image{
+    left: 10px;
+}
+
+.content{
+    overflow-y: auto;
+    position: absolute;
+    background: rgb(255, 255, 255);
+    flex-direction: column;
+    margin-left: 25%;
+    width: 50%;
+    height: 100%;
+}
+
+#DMButton{
+    margin-top: 2%;
+    margin-left: 93%;
+}
+
+#homeIcon{
+    width:50px;
+    height:50px;
+    border-radius: 50%;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#icon{
+    width:50px;
+    height:50px;
+    border-radius: 50%;
+}
+
+#imagePost{
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Supplementary stuff for the search */
+#searchBar{
+    margin-left: 40%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+.imageViewer{
+    position: absolute;
+    width: 85%;
+    height:100%;
+    margin-left:10%;
+}
+
+.imageRows{
+   overflow-y: auto;
+   width:100%;
+   height:90%;
+   display: flex;
+   flex-wrap: wrap;
+   background-color: white;
+}
+
+.imageRows div{
+    display: flex;
+}
+
+.wrap{
+    flex-wrap: wrap;
+}

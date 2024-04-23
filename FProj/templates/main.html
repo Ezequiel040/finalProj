@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
+</head>
+
+<body  class="mainPage">
+<!-- Main Page -->
+
+<!-- navbar, buttons will be put here -->
+<div class="navbar">
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
+</div>
+
+<!-- Instagram Esque Posts -->
+<div class="content">
+    <br>
+    <table>
+        <!-- Every table Row will be a post -->
+        <tr>
+            <td>
+                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                <span style="font-size:30px">June Eguilos</span>
+            </td>
+            <!--<td style="font-size:30px;">June Eguilos</td>-->
+        </tr>
+        <!-- Image Content -->
+        <tr>
+            <td colspan="4"><image id="imagePost" id="imagePost" src="{{ url_for('static', filename='UC_Merced_at_night.jpg') }}"></image></td>
+        </tr>
+        <!-- Likes, Comments -->
+        <tr>
+            <td colspan="2">Small post detail & Description</td>
+            <td>Likes</td>
+            <td>Comments</td>
+        </tr>
+    </table>
+    <br>
+
+    <!-- Repeat of post -->
+    <br>
+    <table>
+        <!-- Every table Row will be a post -->
+        <tr>
+            <td>
+                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                <span style="font-size:30px">June Eguilos</span>
+            </td>
+            <!--<td style="font-size:30px;">June Eguilos</td>-->
+        </tr>
+        <!-- Image Content, change depending on the image -->
+        <tr>
+            <td colspan="4"><image id="imagePost" id="imagePost" src="{{ url_for('static', filename='UC_Merced_at_night.jpg') }}"></image></td>
+        </tr>
+        <!-- Likes, Comments will be added later -->
+        <tr>
+            <td colspan="2">Small post detail & Description</td>
+            <td>Likes</td>
+            <td>Comments</td>
+        </tr>
+    </table>
+    <br>
+
+    <!-- Repeat of post -->
+    <br>
+    <table>
+        <!-- Every table Row will be a post -->
+        <tr>
+            <td>
+                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                <span style="font-size:30px">June Eguilos</span>
+            </td>
+            <!--<td style="font-size:30px;">June Eguilos</td>-->
+        </tr>
+        <!-- Image Content -->
+        <tr>
+            <td colspan="4"><image id="imagePost" id="imagePost" src="{{ url_for('static', filename='UC_Merced_at_night.jpg') }}"></image></td>
+        </tr>
+        <!-- Likes, Comments -->
+        <tr>
+            <td colspan="2">Small post detail & Description</td>
+            <td>Likes</td>
+            <td>Comments</td>
+        </tr>
+    </table>
+    <br>
+    <!-- Repeat of post -->
+</div>
+
+<!-- dm button at the very top right -->
+<div id="DMButton">
+    <image id="icon" src="{{ url_for('static', filename='Icon.png') }}"></image>
+</div>
+
+</body>
+
+</html>
