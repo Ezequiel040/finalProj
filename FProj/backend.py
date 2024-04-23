@@ -114,6 +114,7 @@ def getUserID(username):
     else:
         return None
     
+#Add Student To Course if logged in
 #Main Page for Users
 @app.route('/main')
 def mainPage():
