@@ -1,4 +1,3 @@
-
 from flask import Flask, redirect, url_for, request, render_template, jsonify
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
@@ -14,21 +13,24 @@ app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 #Database Information & Classes
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# class Post(db.model):
-#     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-#     title = db.Column (db.String, unique = True, nullable = False)
-#     description = db.Column(db.String)
+class Post(db.model):
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    title = db.Column(db.String, unique = True, nullable = False)
+    description = db.Column(db.String)
+    label = db.Column(db.String())
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     numPost = db.Column(db.Integer, default=0)
+    
 
     # Dynamic relationship to get followers count
     followers = db.Column(db.Integer, default=0, nullable=False)
@@ -39,7 +41,7 @@ class User(UserMixin, db.Model):
     following_relationships = db.relationship("UserFollowing", foreign_keys='UserFollowing.user_id', backref='user')
 
     def check_password(self, password):
-        return sha256_crypt.verify(password + self.salt, self.password)
+        return self.password == password 
 
     def update_followers_count(self):
         self.followers = db.session.query(db.func.count(UserFollowing.follower_id)).filter(UserFollowing.user_id == self.id).scalar()
@@ -57,7 +59,6 @@ class UserFollowing(db.Model):
 #We do not need any special html that comes with it
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
-
 
 
 @login_manager.user_loader
@@ -110,7 +111,7 @@ def register_post():
     hashedPassword = sha256_crypt.hash(password)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
-    new_user = User(username=username, password=hashedPassword)
+    new_user = User(username=username, password=hashedPassword,followers = 0, following =0, numPost = 0)
     print("New User ID:", new_user.id)
     db.session.add(new_user)
     db.session.commit()
