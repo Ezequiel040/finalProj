@@ -24,6 +24,7 @@ class Post(db.model):
     title = db.Column(db.String, unique = True, nullable = False)
     description = db.Column(db.String)
     label = db.Column(db.String())
+    
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -89,12 +90,18 @@ def login():
                 return render_template('login.html', message='Invalid username or password')
     return render_template('login.html')
 
-
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+@app.route('/forum')
+def post_page():
+    return render_template('forum.html')
+
+@app.route('/forum', methods =['POST','GET'])
+
 
 # Add User to DB 
 @app.route('/register')
@@ -111,7 +118,7 @@ def register_post():
     hashedPassword = sha256_crypt.hash(password)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
-    new_user = User(username=username, password=hashedPassword,followers = 0, following =0, numPost = 0)
+    new_user = User(username=username, password=hashedPassword,followers = 0, following = 0, numPost = 0)
     print("New User ID:", new_user.id)
     db.session.add(new_user)
     db.session.commit()
