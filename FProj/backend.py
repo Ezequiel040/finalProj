@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-class Post(db.model):
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     title = db.Column(db.String, unique = True, nullable = False)
     description = db.Column(db.String)
@@ -96,11 +96,11 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/forum')
-def post_page():
-    return render_template('forum.html')
+# @app.route('/forum')
+# def post_page():
+#     return render_template('forum.html')
 
-@app.route('/forum', methods =['POST','GET'])
+# @app.route('/forum', methods =['POST','GET'])
 
 
 # Add User to DB 
