@@ -160,7 +160,10 @@ def mainPage():
 @app.route('/search')
 def searchPage():
     return render_template('search.html')
-
+#Making sure the student can make a post
+@app.route('/post')
+def postPage():
+    return render_template('post.html')
 
 if __name__ == '__main__':
     with app.app_context():

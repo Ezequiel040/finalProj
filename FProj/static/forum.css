@@ -180,3 +180,13 @@ body.account-page {
     bottom: 0;
     width: 100%;
 }
+
+/*Post CSS*/
+.post-main{
+    border-style: solid;
+    box-shadow: 5px 10px;
+    background-color: white;
+    margin-left: 7%;
+    width: 60%;
+    height: 60%;
+}
