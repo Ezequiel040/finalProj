@@ -6,13 +6,16 @@ from passlib.hash import sha256_crypt
 from flask_login import UserMixin, LoginManager, login_user, login_required, current_user, logout_user
 #im scared abt the midterm
 #me too :( I think i will fail 
+from werkzeug.utils import secure_filename
 import os
 
+UPLOAD_FOLDER = 'FProj/static/Images'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #Database Information & Classes
 db = SQLAlchemy(app)
@@ -163,6 +166,20 @@ def searchPage():
 #Making sure the student can make a post
 @app.route('/post')
 def postPage():
+    return render_template('post.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        print('No file part')
+    file = request.files['file']
+    if file.filename == '':
+        print('No selected file')
+    if file:
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        print('File uploaded successfully')
     return render_template('post.html')
 
 if __name__ == '__main__':

@@ -28,8 +28,10 @@
         <textarea style="resize: none; height: 300px; width: 99%;"id="post" name="post" rows="4" cols="50" placeholder="Enter Recipe Here">
         </textarea>
         <input type="text" id="title" name="title" placeholder="#Baking #Peach Cobbler">
-        
-        <button type="button">Upload Image</button>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload Image</button>
+        </form>
         <button type="button"> Submit </button>
     </div>
 
