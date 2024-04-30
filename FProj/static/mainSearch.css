@@ -41,6 +41,17 @@ body {
     height: 100%;
 }
 
+.popularPage{
+    overflow-y:auto;
+    position: absolute;
+    background: white;
+    flex-direction: column;
+    margin-left: 65%;
+    margin-top: 5%;
+    width: 30%;
+    height: 80%;
+}
+
 #DMButton{
     margin-top: 2%;
     margin-left: 93%;

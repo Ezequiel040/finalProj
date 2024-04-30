@@ -11,6 +11,7 @@ import os
 
 UPLOAD_FOLDER = 'FProj/static/Images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -159,10 +160,12 @@ def add_follower(user_id, follower_id):
 @app.route('/main')
 def mainPage():
     return render_template('main.html')
+
 #Search Bar for Images
 @app.route('/search')
 def searchPage():
     return render_template('search.html')
+
 #Making sure the student can make a post
 @app.route('/post')
 def postPage():
