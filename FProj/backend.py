@@ -129,13 +129,11 @@ def register_post():
     return jsonify({'message': 'User added successfully'}), 201
 
 
-@app.route('/account', methods=['GET', 'POST'])
+@app.route('/account')
 @login_required
 def account():
-    if request.method == 'POST':
-        # Handle any POST requests for the account page here if needed
-        pass
-    return render_template('account.html')
+    use = User.query.filter_by(username =current_user.username)
+    return render_template('account.html', use = use)
 
 
 def getUserID(username):
