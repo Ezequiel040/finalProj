@@ -30,6 +30,8 @@ class Post(db.Model):
     label = db.Column(db.String(), nullable = True)
     picture = db.Column(db.String(), nullable = False)
     upvote = db.Column(db.Integer, default = 0, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('posts', lazy=True))
     
 
 class User(UserMixin, db.Model):
@@ -154,7 +156,16 @@ def add_follower(user_id, follower_id):
     user.update_followers_count()
     follower.update_following_count()
     db.session.commit()
-    
+
+def add_post(user_id, title, description, label):
+    user = User.query.get(user_id)
+    if user:
+        new_post = Post(user_id=user_id, title=title, description=description, label=label)
+        db.session.add(new_post)
+        db.session.commit()
+        return True
+    else:
+        return False   
 #Add Student To Course if logged in
 #Main Page for Users
 @app.route('/main')
@@ -167,9 +178,27 @@ def searchPage():
     return render_template('search.html')
 
 #Making sure the student can make a post
+############
 @app.route('/post')
 def postPage():
     return render_template('post.html')
+# @app.route('/post', methods=['POST'])
+# @login_required
+# def post():
+#     # render_template('post.html')
+#     if request.method == 'POST':
+#         title = request.form['title']
+#         description = request.form['description']
+#         label = request.form['label']
+#         user_id = current_user.id
+#         if title and description and label:
+#             if add_post(user_id, title, description, label):
+#                 return redirect(url_for('mainPage'))
+#             else:
+#                 return jsonify({'error': 'User not found'}), 404
+#         else:
+#             return jsonify({'error': 'Empty fields'}), 400
+#     return render_template('post.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
