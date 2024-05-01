@@ -26,8 +26,10 @@ login_manager.login_view = 'login'
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     title = db.Column(db.String, unique = True, nullable = False)
-    description = db.Column(db.String)
-    label = db.Column(db.String())
+    description = db.Column(db.String, nullable = False)
+    label = db.Column(db.String(), nullable = True)
+    picture = db.Column(db.String(), nullable = False)
+    upvote = db.Column(db.Integer, default = 0, nullable = False)
     
 
 class User(UserMixin, db.Model):
