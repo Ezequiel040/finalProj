@@ -221,6 +221,7 @@ def submitComment():
     user_id = current_user.id
 
     #We can grab the currentPostID using request.args.get
+    #using action="/submitComment?post_id={{post.id}}" this lets us grab the value for /submit
     post_id = request.args.get('post_id')
     add_comment(user_id, post_id, comment)
     return redirect(url_for('viewPost', post_id=post_id))
