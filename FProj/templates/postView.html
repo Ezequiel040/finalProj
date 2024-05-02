@@ -39,10 +39,15 @@
 
         <!-- Not working yet -->
         <div class="viewPost-Comments">
-            <h2>Comments</h2>
-            <Input type="text" id="comments" name="comments" placeholder="Please Place your Comment Here"/>
-            <button type="submit"> Submit </button>
-
+            <form action="/submitComment?post_id={{post.id}}" method="POST">
+            <h2>Comments</h2><input type="hidden" name="post_id" value="{{post.id}}">
+            <Input type="text" id="comment" name="comment" placeholder="Please Place your Comment Here"/>
+            <button type="submit"> Submit </button></form>
+            {% for i in comments%}
+                <!-- {%if i.post_id == post_id%} -->
+                <p>{{i.comment}}</p>
+                <!-- {%endif%} -->
+            {%endfor%}
         </div>
     </div>
 

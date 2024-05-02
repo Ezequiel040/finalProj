@@ -175,10 +175,11 @@ def postPage():
 @login_required
 def viewPost(post_id):
     post = Post.query.get(post_id)
+    comments = Comments.query.filter_by(post_id=post_id).all()
     #Will need Comments query.join later 
     #ex: comments = Comment.query.join(commentwhatever)
     if post:
-        return render_template('postView.html', post=post)
+        return render_template('postView.html', post=post, comments=comments, post_id=post_id)
     else:
         #Error, will send you back if it doesnt find a post
         return render_template('/main')
@@ -213,6 +214,17 @@ def submitPostInfo():
     print("post uploaded successfully!")
     return render_template('post.html')
 
+@app.route('/submitComment', methods=['POST'])
+@login_required
+def submitComment():
+    comment = request.form['comment']
+    user_id = current_user.id
+
+    #We can grab the currentPostID using request.args.get
+    post_id = request.args.get('post_id')
+    add_comment(user_id, post_id, comment)
+    return redirect(url_for('viewPost', post_id=post_id))
+
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()
@@ -230,6 +242,17 @@ def add_follower(user_id, follower_id):
     user.update_followers_count()
     follower.update_following_count()
     db.session.commit()
+
+def add_comment(user_id, post_id, comment):
+    post = Post.query.get(post_id)
+    user = User.query.get(user_id)
+    if user and post:
+        new_comment = Comments(user_id = user_id, post_id = post_id, comment = comment)
+        db.session.add(new_comment)
+        db.session.commit()
+        return True
+    else:
+        return False
 
 def add_post(user_id, title, description, label, picture, ingredients):
     user = User.query.get(user_id)
