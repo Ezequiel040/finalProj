@@ -158,6 +158,7 @@ def searchPage():
 def postPage():
     return render_template('post.html')
 
+#View a specific post, will be useful for main
 @app.route('/postView/<int:post_id>')
 @login_required
 def viewPost(post_id):
@@ -185,7 +186,7 @@ def submitPostInfo():
         print('No selected file')
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    
+    #specific way in order for images to load in our static folder
     shownPath = 'Images/'+filename
     if file:
         file.save(file_path)
