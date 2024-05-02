@@ -22,15 +22,12 @@
     
 
     <!-- Rest of your content -->
-    <div class="post-main">
-        <H2>Create a Post</H2>
-        <form action="/submit" method="POST" enctype="multipart/form-data">
-            <input type="text" id="title" name="title" placeholder="Title">
-            <textarea style="resize: none; height: 300px; width: 99%;"id="post" name="post" rows="4" cols="50" placeholder="Enter Recipe Here"></textarea>
-            <input type="text" id="label" name="label" placeholder="#Baking #Peach Cobbler">
-            <input type="file" name="file" required>    
-            <button type="submit"> Submit </button>
-        </form>
+    <div class="viewPost-main">
+        <h1>{{post.title}}</h1>
+        <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
+        <p>{{post.description}}</p>
+        <p>{{post.label}}</p>
+
     </div>
 
     <footer class="account-footer">

@@ -25,12 +25,13 @@ login_manager.login_view = 'login'
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    title = db.Column(db.String, unique = True, nullable = False)
+    title = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
-    label = db.Column(db.String(), nullable = True)
+    label = db.Column(db.String(), nullable = False)
     picture = db.Column(db.String(), nullable = False)
     upvote = db.Column(db.Integer, default = 0, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
     user = db.relationship('User', backref=db.backref('posts', lazy=True))
     
 
@@ -139,6 +140,62 @@ def account():
     use = User.query.filter_by(username =current_user.username)
     return render_template('account.html', use = use)
 
+#Add Student To Course if logged in
+#Main Page for Users
+@app.route('/main')
+def mainPage():
+    return render_template('main.html')
+
+#Search Bar for Images
+@app.route('/search')
+def searchPage():
+    return render_template('search.html')
+
+#Making sure the student can make a post
+############
+@app.route('/post')
+@login_required
+def postPage():
+    return render_template('post.html')
+
+@app.route('/postView/<int:post_id>')
+@login_required
+def viewPost(post_id):
+    post = Post.query.get(post_id)
+    #Will need Comments query.join later 
+    #ex: comments = Comment.query.join(commentwhatever)
+    if post:
+        return render_template('postView.html', post=post)
+    else:
+        #Error, will send you back if it doesnt find a post
+        return render_template('/main')
+
+@app.route('/submit', methods=['POST'])
+@login_required
+def submitPostInfo():
+    title = request.form['title']
+    description = request.form['post']
+    label = request.form['label']
+    user_id = current_user.id
+    #Get the image in request
+    if 'file' not in request.files:
+        print('No file part')
+    file = request.files['file']
+    if file.filename == '':
+        print('No selected file')
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
+    shownPath = 'Images/'+filename
+    if file:
+        file.save(file_path)
+        print('File uploaded successfully')
+    #upload all the relevant info in the post db
+    #1 is the user_id, we don't have a login system 
+    add_post(user_id, title, description, label, shownPath)
+    print("post uploaded successfully!")
+    return render_template('post.html')
+
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()
@@ -157,62 +214,15 @@ def add_follower(user_id, follower_id):
     follower.update_following_count()
     db.session.commit()
 
-def add_post(user_id, title, description, label):
+def add_post(user_id, title, description, label, picture):
     user = User.query.get(user_id)
     if user:
-        new_post = Post(user_id=user_id, title=title, description=description, label=label)
+        new_post = Post(user_id=user_id, title=title, description=description, label=label, picture = picture)
         db.session.add(new_post)
         db.session.commit()
         return True
     else:
         return False   
-#Add Student To Course if logged in
-#Main Page for Users
-@app.route('/main')
-def mainPage():
-    return render_template('main.html')
-
-#Search Bar for Images
-@app.route('/search')
-def searchPage():
-    return render_template('search.html')
-
-#Making sure the student can make a post
-############
-@app.route('/post')
-def postPage():
-    return render_template('post.html')
-# @app.route('/post', methods=['POST'])
-# @login_required
-# def post():
-#     # render_template('post.html')
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         description = request.form['description']
-#         label = request.form['label']
-#         user_id = current_user.id
-#         if title and description and label:
-#             if add_post(user_id, title, description, label):
-#                 return redirect(url_for('mainPage'))
-#             else:
-#                 return jsonify({'error': 'User not found'}), 404
-#         else:
-#             return jsonify({'error': 'Empty fields'}), 400
-#     return render_template('post.html')
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        print('No file part')
-    file = request.files['file']
-    if file.filename == '':
-        print('No selected file')
-    if file:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(file_path)
-        print('File uploaded successfully')
-    return render_template('post.html')
 
 if __name__ == '__main__':
     with app.app_context():
