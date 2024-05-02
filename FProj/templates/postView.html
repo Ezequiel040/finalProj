@@ -37,12 +37,13 @@
             </ul>
         </div>
 
-        <!-- Not working yet -->
         <div class="viewPost-Comments">
+            <!-- post_view is a way to get the value -->
             <form action="/submitComment?post_id={{post.id}}" method="POST">
-            <h2>Comments</h2><input type="hidden" name="post_id" value="{{post.id}}">
+            <h2>Comments</h2>
             <Input type="text" id="comment" name="comment" placeholder="Please Place your Comment Here"/>
             <button type="submit"> Submit </button></form>
+            <!-- needs CSS to look into Users. -->
             {% for i in comments%}
                 <!-- {%if i.post_id == post_id%} -->
                 <p>{{i.comment}}</p>
