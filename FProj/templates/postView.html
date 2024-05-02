@@ -20,14 +20,30 @@
         </nav>
     </header>
     
-
     <!-- Rest of your content -->
     <div class="viewPost-main">
-        <h1>{{post.title}}</h1>
+        <h1 style="text-align: center;">{{post.title}}</h1>
         <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
-        <p>{{post.description}}</p>
+        <p>{{post.description | safe}}</p>
         <p>{{post.label}}</p>
+    </div>
+    <div class="viewPost-box">
+        <div class="viewPost-Ingredients">
+            <ul style="list-cycle:circle">
+                <h3>Ingredients</h3>
+                {% for i in post.ingredients.split(',')%}
+                    <li>{{i}}</li>
+                {%endfor%}
+            </ul>
+        </div>
 
+        <!-- Not working yet -->
+        <div class="viewPost-Comments">
+            <h2>Comments</h2>
+            <Input type="text" id="comments" name="comments" placeholder="Please Place your Comment Here"/>
+            <button type="submit"> Submit </button>
+
+        </div>
     </div>
 
     <footer class="account-footer">

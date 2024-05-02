@@ -193,11 +193,40 @@ body.account-page {
 /*View Post CSS*/
 .viewPost-main{
     overflow-y: auto;
+    text-align: center;
     border-style: solid;
     box-shadow: 5px 10px;
     background-color: white;
-    width: 60%;
+    width: 500px;
     height: 80%;
+}
+
+.viewPost-box{
+    display:flex;
+    flex-direction: column;
+}
+
+.viewPost-Ingredients{
+    overflow-y: auto;
+    flex-direction: row;
+    background-color: white;
+    margin-left: 10%;
+    margin-bottom: 20px;
+    border-style: solid;
+    box-shadow: 5px 10px;
+    width: 250px;
+    height: 200px;
+}
+
+.viewPost-Comments{
+    overflow-y: auto;
+    flex-direction: row;
+    background-color: white;
+    margin-left: 10%;
+    border-style: solid;
+    box-shadow: 5px 10px;
+    width: 250px;
+    height: 500px;
 }
 
 .image{

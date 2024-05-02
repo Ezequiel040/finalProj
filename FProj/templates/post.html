@@ -26,7 +26,11 @@
         <H2>Create a Post</H2>
         <form action="/submit" method="POST" enctype="multipart/form-data">
             <input type="text" id="title" name="title" placeholder="Title">
-            <textarea style="resize: none; height: 300px; width: 99%;"id="post" name="post" rows="4" cols="50" placeholder="Enter Recipe Here"></textarea>
+            Place your title in the h1 tag, <br>
+            Place your Paragraph in p tag, <br>
+            <input type="text" id="ingredients" name="ingredients" placeholder="Peaches, Butter, Milk">
+            <textarea style="resize: none; height: 300px; width: 99%;"id="post" name="post" rows="4" cols="50" placeholder="Enter Recipe Here"><h1> </h1>
+<p> </p></textarea>
             <input type="text" id="label" name="label" placeholder="#Baking #Peach Cobbler">
             <input type="file" name="file" required>    
             <button type="submit"> Submit </button>

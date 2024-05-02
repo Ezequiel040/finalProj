@@ -27,13 +27,25 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     title = db.Column(db.String, nullable = False)
     description = db.Column(db.String, nullable = False)
+    ingredients = db.Column(db.String, nullable = False)
     label = db.Column(db.String(), nullable = False)
     picture = db.Column(db.String(), nullable = False)
     upvote = db.Column(db.Integer, default = 0, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('posts', lazy=True))
+
+#Comments used only for posts
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    comment = db.Column(db.String, nullable = False)
+    upvote = db.Column(db.Integer, default = 0, nullable = False)
     
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    
+    user = db.relationship('User', backref=db.backref('comments', lazy=True))
+    post = db.relationship('Post', backref=db.backref('comments', lazy=True))
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -177,6 +189,10 @@ def submitPostInfo():
     title = request.form['title']
     description = request.form['post']
     label = request.form['label']
+
+    # Will take the list of ingredients and parse them using commas
+    ingredients = request.form['ingredients']
+    #ingredientList = ingredients.split(",")
     user_id = current_user.id
     #Get the image in request
     if 'file' not in request.files:
@@ -193,7 +209,7 @@ def submitPostInfo():
         print('File uploaded successfully')
     #upload all the relevant info in the post db
     #1 is the user_id, we don't have a login system 
-    add_post(user_id, title, description, label, shownPath)
+    add_post(user_id, title, description, label, shownPath, ingredients)
     print("post uploaded successfully!")
     return render_template('post.html')
 
@@ -215,10 +231,10 @@ def add_follower(user_id, follower_id):
     follower.update_following_count()
     db.session.commit()
 
-def add_post(user_id, title, description, label, picture):
+def add_post(user_id, title, description, label, picture, ingredients):
     user = User.query.get(user_id)
     if user:
-        new_post = Post(user_id=user_id, title=title, description=description, label=label, picture = picture)
+        new_post = Post(user_id=user_id, title=title, description=description, label=label, picture = picture, ingredients=ingredients)
         db.session.add(new_post)
         db.session.commit()
         return True
