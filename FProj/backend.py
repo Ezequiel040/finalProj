@@ -157,13 +157,19 @@ def account():
 # @app.route('/main')
 # def mainPage():
 #     return render_template('main.html')
+@app.route('/users')
+def display_users():
+    # Query all users from the database
+    users = User.query.all()
+    return render_template('users.html', users=users)
 
 @app.route('/main')
 def mainPage():
     if current_user.is_authenticated:
         # User is logged in, display posts
-        user = User.query.filter_by(username=current_user.username).first()
-        posts = user.posts  # Assuming you have defined a relationship between User and Post
+        # user = User.query.filter_by(username=current_user.username).first()
+        # posts = user.posts  # Assuming you have defined a relationship between User and Post
+        posts = Post.query.all()
         return render_template('main.html', posts=posts)
     else:
         # User is not logged in, redirect to login page or handle as needed
