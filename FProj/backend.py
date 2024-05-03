@@ -153,10 +153,43 @@ def account():
     return render_template('account.html', use = use)
 
 #Add Student To Course if logged in
-#Main Page for Users
+# #Main Page for Users
+# @app.route('/main')
+# def mainPage():
+#     return render_template('main.html')
+
 @app.route('/main')
 def mainPage():
-    return render_template('main.html')
+    if current_user.is_authenticated:
+        # User is logged in, display posts
+        user = User.query.filter_by(username=current_user.username).first()
+        posts = user.posts  # Assuming you have defined a relationship between User and Post
+        return render_template('main.html', posts=posts)
+    else:
+        # User is not logged in, redirect to login page or handle as needed
+        return redirect(url_for('login'))
+
+# No need for another route '/main' with login_required decorator
+
+# @app.route('/main')
+# def mainPage():
+#     return render_template('main.html')
+
+# @app.route('/main')
+# @login_required
+# def viewFront(post_id):
+#     user = User.query.filter_by(username = current_user.username).first()
+#     postt = Post.query.filter(post_id=post.id).all()
+#     comments = Comments.query.filter_by(post_id=post_id).all()
+#     #Will need Comments query.join later 
+#     #ex: comments = Comment.query.join(commentwhatever)
+#     posts = []
+#     for i in postt:
+#         post = Post.query.get(i.post_id)
+#         if post:
+#             posts.append(post)
+#     return render_template('main.html', posts = posts)
+        # return render_template('main.html', post=post, comments=comments, post_id=post_id)
 
 #Search Bar for Images
 @app.route('/search')
@@ -176,6 +209,7 @@ def postPage():
 def viewPost(post_id):
     post = Post.query.get(post_id)
     comments = Comments.query.filter_by(post_id=post_id).all()
+    print(post)
     #Will need Comments query.join later 
     #ex: comments = Comment.query.join(commentwhatever)
     if post:

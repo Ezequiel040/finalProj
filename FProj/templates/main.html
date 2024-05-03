@@ -2,7 +2,9 @@
 <html>
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
+    <script>console.log(post)</script>
 </head>
+
 
 <body  class="mainPage">
 <!-- Main Page -->
@@ -16,10 +18,12 @@
     <br>
     <table>
         <!-- Every table Row will be a post -->
-        <tr>
             <td>
+                
+                {%for i in posts%}
                 <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
-                <span style="font-size:30px">June Eguilos</span>
+                <span style="font-size:30px">{{i.title}}</span>
+                {% endfor%}
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
         </tr>
