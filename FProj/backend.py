@@ -166,14 +166,28 @@ def display_users():
 @app.route('/main')
 def mainPage():
     if current_user.is_authenticated:
-        # User is logged in, display posts
-        # user = User.query.filter_by(username=current_user.username).first()
-        # posts = user.posts  # Assuming you have defined a relationship between User and Post
         posts = Post.query.all()
-        return render_template('main.html', posts=posts)
+        popularPosts = Post.query.order_by(Post.upvote.desc()).all()
+        
+        topPosts = popularPosts[:3]
+        return render_template('main.html', posts=posts,popularPosts = topPosts)
     else:
-        # User is not logged in, redirect to login page or handle as needed
         return redirect(url_for('login'))
+
+@app.route('/like/<int:post_id>', methods=['POST'])
+def like_post(post_id):
+    # Find the post by its ID
+    post = Post.query.get(post_id)
+    if post:
+        # Increment the upvote count for the post
+        post.upvote += 1
+        # Commit the changes to the database
+        db.session.commit()
+        # Return a JSON response indicating success
+        return jsonify({'success': True, 'message': 'Post upvoted successfully'})
+    else:
+        # If post with the given ID doesn't exist, return a JSON response with error message
+        return jsonify({'success': False, 'message': 'Post not found'}), 404
 
 # No need for another route '/main' with login_required decorator
 

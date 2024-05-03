@@ -2,7 +2,9 @@
 <html>
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
-    <script>console.log(post)</script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+    <!-- <script>console.log(post)</script> -->
 </head>
 
 
@@ -20,10 +22,10 @@
         <!-- Every table Row will be a post -->
         {%for i in posts%}
             <td>
-               
+
                 <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
                 <span style="font-size:30px">{{i.title}}</span>
-              
+
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
         </tr>
@@ -35,13 +37,18 @@
         <!-- Likes, Comments -->
         <tr>
             <td colspan="2">TITLE, WILL LEAD TO ANOTHER POST HERE</td>
-            <td>^ Likes v</td>
         </tr>
+        <tr>
+            <td>{{i.upvote}}</td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="likePost('{{i.id}}')">Like</button></td>
+        </tr>
+        {%endfor%}
     </table>
-    {%endfor%}
+
     <br>
 
-    
 
     <!-- Repeat of post -->
     
@@ -55,45 +62,25 @@
     </div>
     <br>
     <table>
+        {%for i in popularPosts%}
         <!-- Every table Row will be a post -->
         <tr>
             <td>
                 <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
-                <span style="font-size:30px">June Eguilos</span>
+                <span style="font-size:30px">{{i.title}}</span>
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
         </tr>
         <!-- Image Content -->
         <tr>
-            <td colspan="4"><image id="imagePost" id="imagePost" src="{{ url_for('static', filename='UC_Merced_at_night.jpg') }}"></image></td>
+            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}""></image></td>
         </tr>
         <!-- Likes, Comments -->
         <tr>
             <td colspan="2">TITLE, WILL LEAD TO ANOTHER POST HERE</td>
             <td>^ Likes v</td>
         </tr>
-    </table>
-    <br>
-
-    <br>
-    <table>
-        <!-- Every table Row will be a post -->
-        <tr>
-            <td>
-                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
-                <span style="font-size:30px">June Eguilos</span>
-            </td>
-            <!--<td style="font-size:30px;">June Eguilos</td>-->
-        </tr>
-        <!-- Image Content -->
-        <tr>
-            <td colspan="4"><image id="imagePost" id="imagePost" src="{{ url_for('static', filename='UC_Merced_at_night.jpg') }}"></image></td>
-        </tr>
-        <!-- Likes, Comments -->
-        <tr>
-            <td colspan="2">TITLE, WILL LEAD TO ANOTHER POST HERE</td>
-            <td>^ Likes v</td>
-        </tr>
+        {%endfor%}
     </table>
     <br>
 </div>
