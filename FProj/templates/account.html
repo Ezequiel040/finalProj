@@ -19,7 +19,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container" style="background-color: white;">
         <div class="user-info">
             <h2>Welcome, {{ current_user.username }}</h2>
             <p>Number of Posts: {{ current_user.numPost }}</p>
@@ -29,8 +29,13 @@
             <h3>Your Posts:</h3>
             <ul>
                 {% for post in current_user.posts %}
-                    <li>{{ post.title }}</li>
-                    <!-- Add more details about the post if needed -->
+                    <li>
+                        <a href="{{ url_for('viewPost', post_id=post.id) }}">
+                            {{ post.title }}
+                        </a>
+                        <img style="width: 10%; height: 10%" src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
+                        <!-- Add more details about the post if needed -->
+                    </li>
                 {% endfor %}
             </ul>
         </div>

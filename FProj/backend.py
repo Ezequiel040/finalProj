@@ -145,12 +145,12 @@ def register_post():
     db.session.commit()
     return jsonify({'message': 'User added successfully'}), 201
 
-
 @app.route('/account')
 @login_required
 def account():
-    use = User.query.filter_by(username =current_user.username)
-    return render_template('account.html', use = use)
+    posts = current_user.posts
+    num_posts = len(posts)
+    return render_template('account.html', posts=posts, num_posts=num_posts)
 
 #Add Student To Course if logged in
 # #Main Page for Users
