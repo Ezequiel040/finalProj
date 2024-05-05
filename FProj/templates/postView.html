@@ -23,10 +23,14 @@
     <!-- Rest of your content -->
     <div class="viewPost-main">
         <h1 style="text-align: center;">{{post.title}}</h1>
-        <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
-        <p>{{post.description | safe}}</p>
-        <p>{{post.label}}</p>
+        <p style="font-size: 14px">Likes: {{post.upvote}}</p>
+        <div class="viewPost-content">
+            <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
+            <p>{{post.description | safe}}</p>
+            <p>{{post.label}}</p>
+        </div>
     </div>
+
     <div class="viewPost-box">
         <div class="viewPost-Ingredients">
             <ul style="list-cycle:circle">
