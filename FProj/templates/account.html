@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Management System - Account</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='account.css') }}"> New CSS file -->
     <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
 <body class="account-page">
@@ -19,12 +18,19 @@
         </nav>
     </header>
 
-    <div class="container" style="background-color: white;">
+    <div class="container" style="background-color: white">
         <div class="user-info">
             <h2>Welcome, {{ current_user.username }}</h2>
             <p>Number of Posts: {{ num_posts }}</p>
+            <!-- Profile Picture -->
+            {% if current_user.profile_picture %}
+                <img src="{{ current_user.profile_picture }}" alt="Profile Picture" onclick="document.getElementById('profile_picture_input').click();" style="cursor: pointer;">
+            {% else %}
+                <input type="file" id="profile_picture_input" style="display: none;" onchange="uploadProfilePicture(this)">
+                <label for="profile_picture_input">Upload Profile Picture</label>
+            {% endif %}
         </div>
-
+        
         <div class="user-posts">
             <h3>Your Posts:</h3>
             <ul>
@@ -33,7 +39,7 @@
                         <a href="{{ url_for('viewPost', post_id=post.id) }}">
                             {{ post.title }}
                         </a>
-                        <img style="width: 10%; height: 10%" src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
+                        <img style="width: 10%; height: 10%"src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
                         <!-- Add more details about the post if needed -->
                     </li>
                 {% endfor %}
@@ -42,7 +48,31 @@
     </div>
 
     <footer class="account-footer">
-        <p>Copyright © Flowt. All rights reserved.</p>
+        <p>Copyright Â© Flowt. All rights reserved.</p>
     </footer>
+
+    <!-- JavaScript for uploading profile picture -->
+    <script>
+        function uploadProfilePicture(input) {
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            fetch('/upload_profile_picture', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    throw new Error('Failed to upload profile picture');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Failed to upload profile picture');
+            });
+        }
+    </script>
 </body>
 </html>
