@@ -52,7 +52,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     numPost = db.Column(db.Integer, default=0)
-    
+    profile_picture = db.Column(db.String(255))
+
 
     # Dynamic relationship to get followers count
     followers = db.Column(db.Integer, default=0, nullable=False)
@@ -152,11 +153,25 @@ def account():
     num_posts = len(posts)
     return render_template('account.html', posts=posts, num_posts=num_posts)
 
-#Add Student To Course if logged in
-# #Main Page for Users
-# @app.route('/main')
-# def mainPage():
-#     return render_template('main.html')
+@app.route('/upload_profile_picture', methods=['POST'])
+@login_required
+def upload_profile_picture():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        current_user.profile_picture = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        db.session.commit()
+        flash('Profile picture uploaded successfully')
+    return redirect(url_for('account'))
+
+
 @app.route('/users')
 def display_users():
     # Query all users from the database
@@ -188,28 +203,6 @@ def like_post(post_id):
     else:
         # If post with the given ID doesn't exist, return a JSON response with error message
         return jsonify({'success': False, 'message': 'Post not found'}), 404
-
-# No need for another route '/main' with login_required decorator
-
-# @app.route('/main')
-# def mainPage():
-#     return render_template('main.html')
-
-# @app.route('/main')
-# @login_required
-# def viewFront(post_id):
-#     user = User.query.filter_by(username = current_user.username).first()
-#     postt = Post.query.filter(post_id=post.id).all()
-#     comments = Comments.query.filter_by(post_id=post_id).all()
-#     #Will need Comments query.join later 
-#     #ex: comments = Comment.query.join(commentwhatever)
-#     posts = []
-#     for i in postt:
-#         post = Post.query.get(i.post_id)
-#         if post:
-#             posts.append(post)
-#     return render_template('main.html', posts = posts)
-        # return render_template('main.html', post=post, comments=comments, post_id=post_id)
 
 #Search Bar for Images
 @app.route('/search')

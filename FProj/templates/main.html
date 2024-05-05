@@ -2,6 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
+    <style>
+        /* Add this style to set the image dimensions */
+        .image {
+            width: 200px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 
     <!-- <script>console.log(post)</script> -->
@@ -12,7 +19,7 @@
 <!-- Main Page -->
 
 <!-- Instagram Esque Posts -->
-<div class="content">
+<div class="content" id = "scrollContent">
     <div>
         <a href="/post" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;">Add Post</a>
     </div>
@@ -33,7 +40,7 @@
         </tr>
         <!-- Image Content -->
         <tr>
-            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}""></image></td>
+            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
 
         </tr>
         <!-- Likes, Comments -->
@@ -45,13 +52,7 @@
         </tr>
         {%endfor%}
     </table>
-
     <br>
-
-
-    <!-- Repeat of post -->
-    
-    <!-- Repeat of post -->
 </div>
 
 <!-- Needs to be another Div Content with Popular Posts-->
@@ -72,7 +73,7 @@
         </tr>
         <!-- Image Content -->
         <tr>
-            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}""></image></td>
+            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
         </tr>
         <!-- Likes, Comments -->
         <tr>
@@ -83,11 +84,6 @@
     </table>
     <br>
 </div>
-<!-- dm button at the very top right 
-<div id="DMButton">
-    <image id="icon" src="{{ url_for('static', filename='Icon.png') }}"></image>
-</div>-->
-
 </body>
 
 </html>
