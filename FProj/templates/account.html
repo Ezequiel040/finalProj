@@ -9,9 +9,6 @@
     <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
 <body class="account-page">
-
-
-
     <header class="account-header">
         <nav class="account-nav">
             <ul>
@@ -21,19 +18,26 @@
             </ul>
         </nav>
     </header>
-    <table>
-        {% for ligma in use %}
-        <tr>
-            <td>{{ligma.numPost}}</td>
-        </tr>
-        <tr>
-            <td>Num of follow</td>
-        </tr>
-        {% endfor %}
-</table>
+
+    <div class="container">
+        <div class="user-info">
+            <h2>Welcome, {{ current_user.username }}</h2>
+            <p>Number of Posts: {{ current_user.numPost }}</p>
+        </div>
+
+        <div class="user-posts">
+            <h3>Your Posts:</h3>
+            <ul>
+                {% for post in current_user.posts %}
+                    <li>{{ post.title }}</li>
+                    <!-- Add more details about the post if needed -->
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
     <footer class="account-footer">
         <p>Copyright © Flowt. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
