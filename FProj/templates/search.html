@@ -24,14 +24,24 @@
         <div>
         <h2>Find Specific Posts Associated with Tags</h2>
         <input type="text" id="filter" name="filter" placeholder="Search for Tags">
+        {% set tagCount = {} %}
         {% for i in posts %}
-            {% for j in i.label.split('#') %}
+            {% for j in i.label.split(' ') %}
                 {% if j != ''%}
-                    <!-- This seperates each single #Label, we can use a tag to get each post-->
-                    <a style="background-color: rgb(208, 208, 255); border-radius: 10px; color: black; text-decoration: none"href="/search/{{j}}">#{{j}}</a>
+                    <!-- Our Dictionary to get the amount of similar tags -->
+                    {% if j not in tagCount %}
+                        {% set _ = tagCount.update({j: 1}) %}
+                    {% else %}
+                        {% set _ = tagCount.update({j: tagCount[j] + 1}) %}
+                    {% endif %}
                 {% endif%}
             {%endfor%}
         {% endfor %}
+
+        {% for tag, count in tagCount.items()%}
+        <!-- This seperates each single #Label, we can use a tag to get each post-->
+        <a style="background-color: rgb(208, 208, 255); border-radius: 10px; color: black; text-decoration: none"href="/search/{{tag.split('#')[1]}}">{{tag}}({{count}})</a>
+        {%endfor%}
         </div>
 
         <!-- Show posts associated when clicking specific tags -->
