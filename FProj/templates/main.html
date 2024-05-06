@@ -38,8 +38,15 @@
         <!-- Every table Row will be a post -->
         {%for i in posts%}
             <td>
-
-                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                {% for user in users %}
+                    {% if user.id == i.user_id %}
+                        {%if user.profile_picture%}
+                        <img id="icon" src="{{ url_for('static', filename=user.profile_picture) }}">
+                        {%else%}
+                        <img id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                        {%endif%}
+                    {% endif %}
+                {% endfor %}
                     <a href="{{ url_for('viewPost', post_id=i.id) }}">
                         {{ i.title }}
                     </a>
@@ -75,7 +82,15 @@
         <!-- Every table Row will be a post -->
         <tr>
             <td>
-                <image id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                {% for user in users %}
+                    {% if user.id == i.user_id %}
+                        {%if user.profile_picture%}
+                        <img id="icon" src="{{ url_for('static', filename=user.profile_picture) }}">
+                        {%else%}
+                        <img id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                        {%endif%}
+                    {% endif %}
+                {% endfor %}
                 <span style="font-size:30px">{{i.title}}</span>
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->

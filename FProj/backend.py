@@ -186,11 +186,12 @@ def display_users():
 @app.route('/main')
 def mainPage():
     if current_user.is_authenticated:
+        users = User.query.all()
         posts = Post.query.all()
         popularPosts = Post.query.order_by(Post.upvote.desc()).all()
         
         topPosts = popularPosts[:3]
-        return render_template('main.html', posts=posts,popularPosts = topPosts)
+        return render_template('main.html', posts=posts,popularPosts = topPosts, users=users)
     else:
         return redirect(url_for('login'))
 
