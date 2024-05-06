@@ -24,7 +24,7 @@
             <p>Number of Posts: {{ num_posts }}</p>
             <!-- Profile Picture -->
             {% if current_user.profile_picture %}
-                <img style="border-radius: 25px" src="{{ url_for('static', filename=current_user.profile_picture) }}">
+                <img style="border-radius: 50px; width: 80px; height: 80px" src="{{ url_for('static', filename=current_user.profile_picture) }}">
             {% else %}
             <form action="/upload_profile_picture" method="POST" enctype="multipart/form-data">
                 <input type="file" name="file" required>
