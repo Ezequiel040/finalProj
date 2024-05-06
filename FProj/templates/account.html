@@ -8,6 +8,9 @@
     <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
 <body class="account-page">
+    <footer class="account-footer">
+        <p>Copyright Â© Flowt. All rights reserved.</p>
+    </footer>
     <header class="account-header">
         <nav class="account-nav">
             <ul>
@@ -32,25 +35,22 @@
             </form>
             {% endif %}
         </div>
-        
+
         <div class="user-posts">
             <h3>Your Posts:</h3>
             <ul>
                 {% for post in current_user.posts %}
                     <li>
+                        <img style="width: 10%; height: 10%"src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
                         <a href="{{ url_for('viewPost', post_id=post.id) }}">
                             {{ post.title }}
                         </a>
-                        <img style="width: 10%; height: 10%"src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
+
                         <!-- Add more details about the post if needed -->
                     </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-
-    <footer class="account-footer">
-        <p>Copyright Â© Flowt. All rights reserved.</p>
-    </footer>
 </body>
 </html>

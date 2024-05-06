@@ -216,7 +216,7 @@ def dislike_post(post_id):
     post = Post.query.get(post_id)
     if post:
         # Increment the upvote count for the post
-        post.upvote -= 1
+        post.downvote -= 1
         # Commit the changes to the database
         db.session.commit()
         # Return a JSON response indicating success

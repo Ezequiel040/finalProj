@@ -13,8 +13,6 @@
 
     <!-- <script>console.log(post)</script> -->
 </head>
-
-
 <body  class="mainPage">
 <!-- Main Page -->
 <header class="account-header">
@@ -116,8 +114,9 @@
         </tr>
         <tr>
             <td><button type="button" onclick="likePost('{{i.id}}')">Like</button></td>
-            <td><button type = "button" onclick="dislike('{{i.id}}')">dislike</button></td>
+            <td><button type = "button" onclick="dislikePost('{{i.id}}')">dislike</button></td>
         </tr>
+        
         {%endfor%}
     </table>
     <br>

@@ -198,7 +198,7 @@ body.account-page {
     border-style: solid;
     box-shadow: 5px 10px;
     background-color: white;
-    width: 500px;
+    width: 400px;
     height: 80%;
 }
 
@@ -219,9 +219,10 @@ body.account-page {
     background-color: white;
     margin-left: 10%;
     margin-bottom: 20px;
+    margin-top: 10px;
     border-style: solid;
     box-shadow: 5px 10px;
-    width: 250px;
+    width: 300px;
     height: 200px;
 }
 
@@ -232,8 +233,9 @@ body.account-page {
     margin-left: 10%;
     border-style: solid;
     box-shadow: 5px 10px;
-    width: 250px;
-    height: 500px;
+    width: 300px;
+    height: 200px;
+    margin-bottom: 50px;
 }
 
 .image{
