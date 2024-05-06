@@ -31,6 +31,7 @@ class Post(db.Model):
     label = db.Column(db.String(), nullable = False)
     picture = db.Column(db.String(), nullable = False)
     upvote = db.Column(db.Integer, default = 0, nullable = False)
+    downvote = db.Column(db.Integer, default = 0, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('posts', lazy=True))
@@ -82,7 +83,6 @@ class UserFollowing(db.Model):
 #We do not need any special html that comes with it
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -209,6 +209,22 @@ def like_post(post_id):
     else:
         # If post with the given ID doesn't exist, return a JSON response with error message
         return jsonify({'success': False, 'message': 'Post not found'}), 404
+
+@app.route('/dislike/<int:post_id>', methods=['POST'])
+def dislike_post(post_id):
+    # Find the post by its ID
+    post = Post.query.get(post_id)
+    if post:
+        # Increment the upvote count for the post
+        post.upvote -= 1
+        # Commit the changes to the database
+        db.session.commit()
+        # Return a JSON response indicating success
+        return jsonify({'success': True, 'message': 'Post upvoted successfully'})
+    else:
+        # If post with the given ID doesn't exist, return a JSON response with error message
+        return jsonify({'success': False, 'message': 'Post not found'}), 404
+
 
 #Search Bar for Images
 @app.route('/search')

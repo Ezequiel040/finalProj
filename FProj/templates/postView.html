@@ -7,8 +7,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='forum.css') }}">
     <!-- <script src="{{ url_for('static', filename='login.js') }}"></script> -->
 </head>
-<body class="forum-page">
-
+<body>
+    <footer class="account-footer">
+        <p>Copyright © Flowt. All rights reserved.</p>
+    </footer>
     <header class="forum-header">
         <nav class="forum-nav">
             <ul>
@@ -19,46 +21,43 @@
             </ul>
         </nav>
     </header>
-    
-    <!-- Rest of your content -->
-    <div class="viewPost-main">
-        <h1 style="text-align: center;">{{post.title}}</h1>
-        <p style="font-size: 14px">Likes: {{post.upvote}}</p>
-        <div class="viewPost-content">
-            <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
-            <p>{{post.description | safe}}</p>
-            <p>{{post.label}}</p>
+    <div class="forum-page">
+        <!-- Rest of your content -->
+        <div class="viewPost-main">
+            <h1 style="text-align: center;">{{post.title}}</h1>
+            <p style="font-size: 14px">Likes: {{post.upvote}}</p>
+            <div class="viewPost-content">
+                <image class="image" src="{{ url_for('static', filename=post.picture) }}"">
+                <p>{{post.description | safe}}</p>
+                <p>{{post.label}}</p>
+            </div>
         </div>
-    </div>
 
-    <div class="viewPost-box">
-        <div class="viewPost-Ingredients">
-            <ul style="list-cycle:circle">
-                <h3>Ingredients</h3>
-                {% for i in post.ingredients.split(',')%}
-                    <li>{{i}}</li>
+        <div class="viewPost-box">
+            <div class="viewPost-Ingredients">
+                <ul style="list-cycle:circle">
+                    <h3>Ingredients</h3>
+                    {% for i in post.ingredients.split(',')%}
+                        <li>{{i}}</li>
+                    {%endfor%}
+                </ul>
+            </div>
+
+            <div class="viewPost-Comments">
+                <!-- post_view is a way to get the value -->
+                <form action="/submitComment?post_id={{post.id}}" method="POST">
+                <h2>Comments</h2>
+                <Input type="text" id="comment" name="comment" placeholder="Please Place your Comment Here"/>
+                <button type="submit"> Submit </button></form>
+                <!-- needs CSS to look into Users. -->
+                {% for i in comments%}
+                    <!-- {%if i.post_id == post_id%} -->
+                    <p>{{i.comment}}</p>
+                    <!-- {%endif%} -->
                 {%endfor%}
-            </ul>
-        </div>
-
-        <div class="viewPost-Comments">
-            <!-- post_view is a way to get the value -->
-            <form action="/submitComment?post_id={{post.id}}" method="POST">
-            <h2>Comments</h2>
-            <Input type="text" id="comment" name="comment" placeholder="Please Place your Comment Here"/>
-            <button type="submit"> Submit </button></form>
-            <!-- needs CSS to look into Users. -->
-            {% for i in comments%}
-                <!-- {%if i.post_id == post_id%} -->
-                <p>{{i.comment}}</p>
-                <!-- {%endif%} -->
-            {%endfor%}
+            </div>
         </div>
     </div>
-
-    <footer class="account-footer">
-        <p>Copyright © Flowt. All rights reserved.</p>
-    </footer>
 
 </body>
 </html>
