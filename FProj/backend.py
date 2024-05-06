@@ -213,7 +213,9 @@ def like_post(post_id):
 #Search Bar for Images
 @app.route('/search')
 def searchPage():
-    return render_template('search.html')
+    users = User.query.all()
+    posts = Post.query.all()
+    return render_template('search.html', posts=posts, users=users)
 
 #Making sure the student can make a post
 ############
@@ -279,6 +281,13 @@ def submitComment():
     add_comment(user_id, post_id, comment)
     return redirect(url_for('viewPost', post_id=post_id))
 
+@app.route('/search/<tag>')
+def filter_posts(tag):
+    filtered_posts = Post.query.filter(Post.label.contains(tag)).all()
+    users = User.query.all()
+    posts = Post.query.all()
+    #Render template with filtered posts
+    return render_template('search.html', posts = posts ,filtered_posts = filtered_posts, users=users)
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()

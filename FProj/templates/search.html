@@ -1,34 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='mainSearch.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Management System - Account</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
 </head>
+<body class="account-page">
+    <header class="account-header">
+        <nav class="account-nav">
+            <ul>
+                <li><a onclick="window.location.href='/main'">Dashboard</a></li>
+                <li><a onclick="window.location.href='/account'">Profile</a></li>
+                <li><a onclick="window.location.href='/login'">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<body>
+    <!-- Main Page -->
+    <div class="TagSearch">
+        <!-- Search for tags and Filter them -->
+        <div>
+        <h2>Find Specific Posts Associated with Tags</h2>
+        <input type="text" id="filter" name="filter" placeholder="Search for Tags">
+        {% for i in posts %}
+            {% for j in i.label.split('#') %}
+                {% if j != ''%}
+                    <!-- This seperates each single #Label, we can use a tag to get each post-->
+                    <a style="background-color: rgb(208, 208, 255); border-radius: 10px; color: black; text-decoration: none"href="/search/{{j}}">#{{j}}</a>
+                {% endif%}
+            {%endfor%}
+        {% endfor %}
+        </div>
 
-<!-- Nav bar on very left -->
-<div class="navbar">
-    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
-    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
-    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
-    <div><image id="homeIcon" src="{{ url_for('static', filename='Icon.png') }}"></div>
-</div>
+        <!-- Show posts associated when clicking specific tags -->
+        <div class="TagPostSearch">
+            <h2>Shown Posts</h2>
 
-<!-- instagram multiple images scene -->
-<!-- will have to have multiple rows, maybe a table? -->
-<div class="imageViewer">
-    <!-- Search Bar on the top -->
-    <div id="searchBar">
-        <form>
-            <label for="search">Search:</label>
-            <input type="text" name="search" size="20">
-        </form>
-    </div>
-    <div class="imageRows">
+            <table>
+                <!-- Every table Row will be a post -->
+                {% if filtered_posts%}
+                {%for i in filtered_posts%}
+                    <td>
+                        {% for user in users %}
+                            {% if user.id == i.user_id %}
+                                {%if user.profile_picture%}
+                                <img id="icon" src="{{ url_for('static', filename=user.profile_picture) }}">
+                                {%else%}
+                                <img id="icon" src="{{ url_for('static', filename='Icon.png') }}">
+                                {%endif%}
+                            {% endif %}
+                        {% endfor %}
+                            <a href="{{ url_for('viewPost', post_id=i.id) }}">
+                                {{ i.title }}
+                            </a>
         
+                    </td>
+                    <!--<td style="font-size:30px;">June Eguilos</td>-->
+                </tr>
+                <!-- Image Content -->
+                <tr>
+                    <td colspan="4"><image style="width: 50px; height: 50px" src="{{ url_for('static', filename=i.picture) }}"></image></td>
+        
+                </tr>
+                <!-- Likes, Comments -->
+                <tr>
+                    <td>{{i.label}}</td>
+                </tr>
+                {%endfor%}
+                {%endif%}
+            </table>
+        </div>
+
     </div>
-</div>
 
+    <footer class="account-footer">
+        <p>Copyright Â© Flowt. All rights reserved.</p>
+    </footer>
 </body>
-
 </html>

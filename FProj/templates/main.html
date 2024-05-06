@@ -31,6 +31,7 @@
 <div class="content" id = "scrollContent">
     <div>
         <a href="/post" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;">Add Post</a>
+        <a href="/search" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;">Search</a>
     </div>
     <br>
     <br>
@@ -49,7 +50,7 @@
                 {% endfor %}
                     <a href="{{ url_for('viewPost', post_id=i.id) }}">
                         {{ i.title }}
-                    </a>
+                    </a>{{i.label}}
 
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
@@ -69,6 +70,10 @@
         {%endfor%}
     </table>
     <br>
+</div>
+
+<div class="filterTags">
+    test
 </div>
 
 <!-- Needs to be another Div Content with Popular Posts-->
