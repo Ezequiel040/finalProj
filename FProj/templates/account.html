@@ -24,10 +24,12 @@
             <p>Number of Posts: {{ num_posts }}</p>
             <!-- Profile Picture -->
             {% if current_user.profile_picture %}
-                <img src="{{ current_user.profile_picture }}" alt="Profile Picture" onclick="document.getElementById('profile_picture_input').click();" style="cursor: pointer;">
+                <img style="border-radius: 25px" src="{{ url_for('static', filename=current_user.profile_picture) }}">
             {% else %}
-                <input type="file" id="profile_picture_input" style="display: none;" onchange="uploadProfilePicture(this)">
-                <label for="profile_picture_input">Upload Profile Picture</label>
+            <form action="/upload_profile_picture" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit"> Submit </button>
+            </form>
             {% endif %}
         </div>
         
@@ -50,29 +52,5 @@
     <footer class="account-footer">
         <p>Copyright Â© Flowt. All rights reserved.</p>
     </footer>
-
-    <!-- JavaScript for uploading profile picture -->
-    <script>
-        function uploadProfilePicture(input) {
-            const formData = new FormData();
-            formData.append('file', input.files[0]);
-
-            fetch('/upload_profile_picture', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    throw new Error('Failed to upload profile picture');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('Failed to upload profile picture');
-            });
-        }
-    </script>
 </body>
 </html>

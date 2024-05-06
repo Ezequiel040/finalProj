@@ -156,20 +156,25 @@ def account():
 @app.route('/upload_profile_picture', methods=['POST'])
 @login_required
 def upload_profile_picture():
+    posts = current_user.posts
+    num_posts = len(posts)
+
+    #Get the image in request
     if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
+        print('No file part')
     file = request.files['file']
     if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        current_user.profile_picture = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        db.session.commit()
-        flash('Profile picture uploaded successfully')
-    return redirect(url_for('account'))
+        print('No selected file')
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    #specific way in order for images to load in our static folder
+    shownPath = 'Images/'+filename
+    if file:
+        file.save(file_path)
+        print('File uploaded successfully')
+    current_user.profile_picture = shownPath
+    db.session.commit()
+    return render_template("account.html", posts=posts, num_posts=num_posts)
 
 
 @app.route('/users')
