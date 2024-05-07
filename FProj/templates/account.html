@@ -41,7 +41,7 @@
             <ul>
                 {% for post in current_user.posts %}
                     <li>
-                        <img style="width: 10%; height: 10%"src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
+                        <a href="{{ url_for('viewPost', post_id=post.id) }}"><img style="width: 10%; height: 10%"src="{{ url_for('static', filename=post.picture) }}" alt="Post Picture">
                         <a href="{{ url_for('viewPost', post_id=post.id) }}">
                             {{ post.title }}
                         </a>

@@ -23,24 +23,25 @@
         <!-- Search for tags and Filter them -->
         <div>
         <h2>Find Specific Posts Associated with Tags</h2>
-        <input type="text" id="filter" name="filter" placeholder="Search for Tags">
         {% set tagCount = {} %}
-        {% for i in posts %}
-            {% for j in i.label.split(' ') %}
-                {% if j != ''%}
-                    <!-- Our Dictionary to get the amount of similar tags -->
-                    {% if j not in tagCount %}
-                        {% set _ = tagCount.update({j: 1}) %}
-                    {% else %}
-                        {% set _ = tagCount.update({j: tagCount[j] + 1}) %}
-                    {% endif %}
-                {% endif%}
-            {%endfor%}
+        {% for post in posts %}
+        {% for tag in post.label.split() %}
+            {% if tag.startswith('#') %}
+                {% set tag = tag[1:] %}
+                <!-- Our Dictionary to get the amount of similar tags -->
+                {% if tag not in tagCount %}
+                    {% set _ = tagCount.update({tag: 1}) %}
+                {% else %}
+                    {% set _ = tagCount.update({tag: tagCount[tag] + 1}) %}
+                {% endif %}
+            {% endif %}
         {% endfor %}
+    {% endfor %}
+        <input type="text" id="filter" name="filter" placeholder="Search for a Tag">
 
         {% for tag, count in tagCount.items()%}
         <!-- This seperates each single #Label, we can use a tag to get each post-->
-        <a style="background-color: rgb(208, 208, 255); border-radius: 10px; color: black; text-decoration: none"href="/search/{{tag.split('#')[1]}}">{{tag}}({{count}})</a>
+        <a style="background-color: rgb(208, 208, 255); border-radius: 10px; color: black; text-decoration: none"href="/search/{{tag}}" class="tag">#{{tag}}({{count}})</a>
         {%endfor%}
         </div>
 
@@ -48,10 +49,10 @@
         <div class="TagPostSearch">
             <h2>Shown Posts</h2>
 
-            <table>
                 <!-- Every table Row will be a post -->
                 {% if filtered_posts%}
                 {%for i in filtered_posts%}
+                <table style="background-color: white; width: 100%; box-shadow: 2px 5px 5px; margin-top: 7px; border-radius: 10px;">
                     <td>
                         {% for user in users %}
                             {% if user.id == i.user_id %}
@@ -65,22 +66,22 @@
                             <a href="{{ url_for('viewPost', post_id=i.id) }}">
                                 {{ i.title }}
                             </a>
-        
+
                     </td>
-                    <!--<td style="font-size:30px;">June Eguilos</td>-->
-                </tr>
-                <!-- Image Content -->
-                <tr>
-                    <td colspan="4"><image style="width: 50px; height: 50px" src="{{ url_for('static', filename=i.picture) }}"></image></td>
-        
-                </tr>
-                <!-- Likes, Comments -->
-                <tr>
-                    <td>{{i.label}}</td>
-                </tr>
+                        <!--<td style="font-size:30px;">June Eguilos</td>-->
+                    </tr>
+                    <!-- Image Content -->
+                    <tr>
+                        <td colspan="4"><image style="width: 50px; height: 50px" src="{{ url_for('static', filename=i.picture) }}"></image></td>
+
+                    </tr>
+                    <!-- Likes, Comments -->
+                    <tr>
+                        <td>{{i.label}}</td>
+                    </tr>
+                </table>
                 {%endfor%}
                 {%endif%}
-            </table>
         </div>
 
     </div>
@@ -89,4 +90,19 @@
         <p>Copyright Â© Flowt. All rights reserved.</p>
     </footer>
 </body>
+<script>
+        document.getElementById("filter").addEventListener("input", function() {
+        var input = this.value.toLowerCase();
+        var tags = document.getElementsByClassName("tag");
+
+        for (var i = 0; i < tags.length; i++) {
+            var tagText = tags[i].textContent.toLowerCase();
+            if (tagText.indexOf(input) > -1) {
+                tags[i].style.display = "";
+            } else {
+                tags[i].style.display = "none";
+            }
+        }
+    });
+</script>
 </html>

@@ -29,7 +29,7 @@
 <div class="content" id = "scrollContent">
     <div>
         <a href="/post" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;">Add Post</a>
-        <a href="/search" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;">Search</a>
+        <a href="/search" style="background-color: rgb(218, 218, 218); color: black; width:100%;  box-shadow: 5px 10px; font-size: 34px; text-decoration:none; text-align: center; height: 50px;margin: 10px;">Search</a>
     </div>
     <br>
     <br>
@@ -46,15 +46,15 @@
                         {%endif%}
                     {% endif %}
                 {% endfor %}
-                    <a href="{{ url_for('viewPost', post_id=i.id) }}">
+                <span style="font-size:30px"><a href="{{ url_for('viewPost', post_id=i.id) }}">
                         {{ i.title }}
-                    </a>{{i.label}}
+                    </a></span>{{i.label}}
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
         </tr>
         <!-- Image Content -->
         <tr>
-            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
+            <td colspan="4"><a href="{{ url_for('viewPost', post_id=i.id) }}"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
 
         </tr>
         <!-- Likes, Comments -->
@@ -66,7 +66,6 @@
         <tr>
             <td><button type="button" onclick="likePost('{{i.id}}')">Like</button></td>
             <td><button type="button" onclick="dislikePost('{{i.id}}')">DisLike</button></td>
-
         </tr>
         {%endfor%}
     </table>
@@ -79,7 +78,7 @@
 
 <div class="popularPage">
     <div style="background-color: rgb(255, 217, 217);">
-        Popular Posts(Will be based on Likes)
+        Popular Posts
     </div>
     <br>
     <table>
@@ -96,18 +95,17 @@
                         {%endif%}
                     {% endif %}
                 {% endfor %}
-                <span style="font-size:30px">{{i.title}}</span>
+                <div class = "postTitle">
+                    <span style="font-size:30px"><a href="{{ url_for('viewPost', post_id=i.id) }}">{{i.title}}</span>
+                </div>
             </td>
             <!--<td style="font-size:30px;">June Eguilos</td>-->
         </tr>
         <!-- Image Content -->
         <tr>
-            <td colspan="4"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
+            <td colspan="4"><a href="{{ url_for('viewPost', post_id=i.id) }}"><image class="image" src="{{ url_for('static', filename=i.picture) }}"></image></td>
         </tr>
         <!-- Likes, Comments -->
-        <tr>
-            <td colspan="2">TITLE, WILL LEAD TO ANOTHER POST HERE</td>
-        </tr>
         <tr>
             <td>{{i.upvote}}</td>
             <td>{{i.downvote}}</td>
@@ -116,7 +114,7 @@
             <td><button type="button" onclick="likePost('{{i.id}}')">Like</button></td>
             <td><button type = "button" onclick="dislikePost('{{i.id}}')">dislike</button></td>
         </tr>
-        
+
         {%endfor%}
     </table>
     <br>

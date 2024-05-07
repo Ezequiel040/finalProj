@@ -5,11 +5,10 @@ from flask_admin.contrib.sqla import ModelView
 from passlib.hash import sha256_crypt
 from flask_login import UserMixin, LoginManager, login_user, login_required, current_user, logout_user
 #im scared abt the midterm
-#me too :( I think i will fail 
+#me too :( I think i will fail
 from werkzeug.utils import secure_filename
 import os
-
-UPLOAD_FOLDER = 'FProj/static/Images'
+UPLOAD_FOLDER = 'FProj/static/Images/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
@@ -23,6 +22,12 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+class PostReaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    reaction = db.Column(db.String(10), nullable=False)  # 'like' or 'dislike'
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     title = db.Column(db.String, nullable = False)
@@ -33,7 +38,6 @@ class Post(db.Model):
     upvote = db.Column(db.Integer, default = 0, nullable = False)
     downvote = db.Column(db.Integer, default = 0, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
     user = db.relationship('User', backref=db.backref('posts', lazy=True))
 
 #Comments used only for posts
@@ -41,10 +45,10 @@ class Comments(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     comment = db.Column(db.String, nullable = False)
     upvote = db.Column(db.Integer, default = 0, nullable = False)
-    
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-    
+
     user = db.relationship('User', backref=db.backref('comments', lazy=True))
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
 
@@ -65,7 +69,7 @@ class User(UserMixin, db.Model):
     following_relationships = db.relationship("UserFollowing", foreign_keys='UserFollowing.user_id', backref='user')
 
     def check_password(self, password):
-        return self.password == password 
+        return self.password == password
 
     def update_followers_count(self):
         self.followers = db.session.query(db.func.count(UserFollowing.follower_id)).filter(UserFollowing.user_id == self.id).scalar()
@@ -76,9 +80,9 @@ class User(UserMixin, db.Model):
 class UserFollowing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False) 
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    
+
 #Admin , we can go to the admin page with /admin
 #We do not need any special html that comes with it
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap3')
@@ -125,7 +129,7 @@ def logout():
 # @app.route('/forum', methods =['POST','GET'])
 
 
-# Add User to DB 
+# Add User to DB
 @app.route('/register')
 def register():
     return render_template('create.html')
@@ -133,10 +137,10 @@ def register():
 @app.route('/register', methods=['POST'])
 def register_post():
     data = request.json
-    print("Received JSON data:", data)  
+    print("Received JSON data:", data)
     username = data.get('username')
     password = data.get('password')
-    
+
     hashedPassword = sha256_crypt.hash(password)
     if username is None or password is None:
         return jsonify({'error': 'Missing username or password'}), 400
@@ -165,7 +169,7 @@ def upload_profile_picture():
     file = request.files['file']
     if file.filename == '':
         print('No selected file')
-    filename = secure_filename(file.filename)
+    filename = file.filename
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     #specific way in order for images to load in our static folder
     shownPath = 'Images/'+filename
@@ -189,7 +193,7 @@ def mainPage():
         users = User.query.all()
         posts = Post.query.all()
         popularPosts = Post.query.order_by(Post.upvote.desc()).all()
-        
+
         topPosts = popularPosts[:3]
         return render_template('main.html', posts=posts,popularPosts = topPosts, users=users)
     else:
@@ -247,7 +251,7 @@ def viewPost(post_id):
     post = Post.query.get(post_id)
     comments = Comments.query.filter_by(post_id=post_id).all()
     print(post)
-    #Will need Comments query.join later 
+    #Will need Comments query.join later
     #ex: comments = Comment.query.join(commentwhatever)
     if post:
         return render_template('postView.html', post=post, comments=comments, post_id=post_id)
@@ -272,18 +276,21 @@ def submitPostInfo():
     file = request.files['file']
     if file.filename == '':
         print('No selected file')
-    filename = secure_filename(file.filename)
+    filename = file.filename
+    
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    print(file_path)
     #specific way in order for images to load in our static folder
     shownPath = 'Images/'+filename
     if file:
         file.save(file_path)
         print('File uploaded successfully')
     #upload all the relevant info in the post db
-    #1 is the user_id, we don't have a login system 
+    #1 is the user_id, we don't have a login system
     add_post(user_id, title, description, label, shownPath, ingredients)
     print("post uploaded successfully!")
-    return render_template('post.html')
+
+    return redirect(url_for('mainPage'))
 
 @app.route('/submitComment', methods=['POST'])
 @login_required
@@ -304,6 +311,57 @@ def filter_posts(tag):
     posts = Post.query.all()
     #Render template with filtered posts
     return render_template('search.html', posts = posts ,filtered_posts = filtered_posts, users=users)
+
+@app.route('/react/<int:post_id>', methods=['POST'])
+@login_required
+def react_to_post(post_id):
+    reaction_type = request.form['reaction']  # Assuming the form contains a field named 'reaction'
+
+    # Find the post by its ID
+    post = Post.query.get(post_id)
+    if post:
+        # Check if the user has already reacted to the post
+        post_reaction = PostReaction.query.filter_by(post_id=post_id, user_id=current_user.id).first()
+
+        if post_reaction:
+            # If the user has already reacted to the post, update the reaction count
+            if reaction_type == 'like':
+                if post_reaction.reaction == 'like':
+                    # If the user already liked the post, remove the like
+                    post.upvote -= 1
+                    post_reaction.reaction = None
+                else:
+                    # If the user disliked the post, change dislike to like
+                    post.downvote -= 1
+                    post.upvote += 1
+                    post_reaction.reaction = 'like'
+            else:  # Assuming reaction_type is 'dislike'
+                if post_reaction.reaction == 'dislike':
+                    # If the user already disliked the post, remove the dislike
+                    post.downvote -= 1
+                    post_reaction.reaction = None
+                else:
+                    # If the user liked the post, change like to dislike
+                    post.upvote -= 1
+                    post.downvote += 1
+                    post_reaction.reaction = 'dislike'
+        else:
+            # If the user hasn't reacted to the post, create a new reaction
+            new_reaction = PostReaction(post_id=post_id, user_id=current_user.id, reaction=reaction_type)
+            db.session.add(new_reaction)
+            if reaction_type == 'like':
+                post.upvote += 1
+            else:
+                post.downvote += 1
+
+        # Commit the changes to the database
+        db.session.commit()
+        # Return a JSON response indicating success
+        return jsonify({'success': True, 'message': 'Post reacted successfully'})
+    else:
+        # If post with the given ID doesn't exist, return a JSON response with error message
+        return jsonify({'success': False, 'message': 'Post not found'}), 404
+
 
 def getUserID(username):
     user = User.query.filter_by(username=username).first()
@@ -341,7 +399,7 @@ def add_post(user_id, title, description, label, picture, ingredients):
         db.session.commit()
         return True
     else:
-        return False   
+        return False
 
 if __name__ == '__main__':
     with app.app_context():

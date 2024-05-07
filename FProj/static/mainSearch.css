@@ -2,11 +2,17 @@ body {
     margin: 0%;
     padding: 0%;
     border: 0%;
-    background-color: rgb(17, 53, 95); 
+    background-color: rgb(17, 53, 95);
     background-size: 100%;
     display: flex;
     flex-wrap: wrap;
     height:100%;
+    font-family: Arial, sans-serif;
+}
+
+a{
+    text-decoration: none;
+    font-size: 20px;
 }
 
 .mainPage{
@@ -42,6 +48,8 @@ header {
     transform: translateX(-50%);
 }
 
+
+
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -64,7 +72,7 @@ nav ul li a {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 1rem 0;
+    /*padding: 1rem 0;*/
 }
 
 /* Navigation styles */
@@ -78,6 +86,7 @@ nav ul li a {
     margin: 0;
     display: flex; /* Add flex display */
     justify-content: center; /* Align items to the end (right side) */
+    background-color: #333;
 }
 
 .account-nav ul li {
@@ -91,7 +100,7 @@ nav ul li a {
 .account-nav ul li a {
     text-decoration: none;
     color: #fff;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
@@ -103,7 +112,7 @@ nav ul li a {
 
 .content{
     overflow-y: auto;
-    padding-top: 60px;
+    padding-top: 10px;
     margin-top: 5%;
     margin-bottom: 5%;
     background: rgb(255, 255, 255);
@@ -118,8 +127,10 @@ nav ul li a {
     position: absolute;
     background: white;
     flex-direction: column;
+    /*padding-top:60px;*/
+    margin-top: 5%;
     margin-left: 65%;
-    margin-top: 200px;
+    /*margin-top: 60px;*/
     width: 30%;
     height: 80%;
 }

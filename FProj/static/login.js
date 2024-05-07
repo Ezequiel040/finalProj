@@ -21,7 +21,6 @@ function createAccount() {
     const passwrd = document.getElementById("password").value;
 
     const data = { "username": usrnm, "password": passwrd};
-
     fetch('http://127.0.0.1:5000/register', {
         method: 'POST',
         headers: {

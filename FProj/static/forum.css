@@ -10,6 +10,15 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+p{
+    margin: 2px;
+}
+
+a{
+    font-size: 20px;
 }
 
 .container {
@@ -43,8 +52,50 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #333; /* Link color */
+    color: #fff; /* Link color */
+    /*margin-left: 20px*/
 }
+
+.forum-header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    /*padding: 1rem 0;*/
+}
+
+.forum-nav {
+    background-color: #444;
+}
+
+.forum-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Add flex display */
+    justify-content: center; /* Align items to the end (right side) */
+    background-color: #333;
+}
+
+.forum-nav ul li {
+    margin-left: 20px; /* Add some margin between items */
+}
+
+.forum-nav ul li:first-child {
+    margin-left: 0; /* Remove margin for the first item */
+}
+
+.forum-nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.forum-nav ul li a:hover {
+    background-color: #555;
+}
+
 
 .login-cont {
     background-color: rgba(255, 200, 255, 0.7);
@@ -68,7 +119,7 @@ label {
 }
 
 input[type="text"], input[type="password"] {
-    width: 100%;
+    width: 97%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
@@ -77,7 +128,7 @@ input[type="text"], input[type="password"] {
 }
 
 button[type="submit"], button.create-account {
-    width: 100%;
+    width: 97%;
     padding: 7px;
     margin: 3px;
     border: none;
@@ -178,7 +229,7 @@ body.account-page {
     width: 100%;
     position: fixed;
     bottom:0;
-    z-index: -1; 
+    z-index: -1;
 }
 /*Post CSS*/
 .post-main{
@@ -198,8 +249,9 @@ body.account-page {
     border-style: solid;
     box-shadow: 5px 10px;
     background-color: white;
-    width: 400px;
-    height: 80%;
+    width: 750px;
+    height: 88%;
+    margin-left: 1%;
 }
 
 .viewPost-content{
@@ -217,24 +269,25 @@ body.account-page {
     overflow-y: auto;
     flex-direction: row;
     background-color: white;
-    margin-left: 10%;
+    margin-left: 8%;
     margin-bottom: 20px;
-    margin-top: 10px;
+    margin-top: 30%;
     border-style: solid;
     box-shadow: 5px 10px;
-    width: 300px;
+    width: 500px;
     height: 200px;
+
 }
 
 .viewPost-Comments{
     overflow-y: auto;
     flex-direction: row;
     background-color: white;
-    margin-left: 10%;
+    margin-left: 8%;
     border-style: solid;
     box-shadow: 5px 10px;
-    width: 300px;
-    height: 200px;
+    width: 500px;
+    height: 400px;
     margin-bottom: 50px;
 }
 
